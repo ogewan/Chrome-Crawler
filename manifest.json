@@ -1,17 +1,38 @@
 {
+   "name": "SourceCheck", 
+   "version": "0.1",
+   "description": "Rate articles and links for validity.",
    "browser_action": 
    {
-      "default_icon": "images/icon48.png",
-      "popup": "popup.html"
+      "default_icon": {                    
+         "16": "icon/icon16.png",           
+         "24": "icon/icon24.png",           
+         "32": "icon/icon32.png"            
+       },
+      "popup": "html/popup.html"
    },
-   "background_page": "background.html",
-   "description": "Crawl a url for interesting links!",
+   "background": {
+       "scripts": [
+           "lib/jquery-3.3.1.js",
+           "lib/helpers.js",
+           "lib/chromeCrawlBG.js",
+           "js/scBack.js"
+        ],
+       "persistent": false
+   },
+   "content_scripts": [
+       {
+           "matches": [ "http://*/*", "https://*/*" ],
+           "js": [ "js/scFront.js" ],
+           "run_at": "document_idle"
+       }
+   ],
+   "permissions": [ "tabs", "http://*/*", "https://*/*" ],
    "icons": {
-      "48": "images/icon48.png"
+      "16": "icon/icon48.png",
+      "48": "icon/icon48.png",
+      "128": "icon/icon128.png"
    },
-  
-   "name": "Chrome Crawler",
-   "options_page": "options.html",
-   "permissions": [ "tabs", "http://*/*", "https://*/*" ],   
-   "version": "0.6"
+   "options_page": "html/options.html",
+   "manifest_version": 2
 }

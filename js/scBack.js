@@ -1,0 +1,1 @@
+beginCrawl("https://www.google.com");
