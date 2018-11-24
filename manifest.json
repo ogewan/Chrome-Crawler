@@ -8,31 +8,20 @@
          "16": "icon/icon16.png",           
          "24": "icon/icon24.png",           
          "32": "icon/icon32.png"            
-       },
-      "popup": "html/popup.html"
-   },
-   "background": {
-       "scripts": [
-           "lib/jquery-3.3.1.js",
-           "lib/helpers.js",
-           "lib/chromeCrawlBG.js",
-           "js/scBack.js"
-        ],
-       "persistent": false
+       }
    },
    "content_scripts": [
        {
            "matches": [ "http://*/*", "https://*/*" ],
-           "js": [ "js/scFront.js" ],
+           "js": [ "lib/jquery-3.3.1.js", "js/scFront.js" ],
            "run_at": "document_idle"
        }
    ],
-   "permissions": [ "tabs", "http://*/*", "https://*/*" ],
+   "permissions": [ "tabs" ],
    "icons": {
       "16": "icon/icon48.png",
       "48": "icon/icon48.png",
       "128": "icon/icon128.png"
    },
-   "options_page": "html/options.html",
    "manifest_version": 2
 }
