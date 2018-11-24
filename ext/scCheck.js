@@ -8,6 +8,7 @@
 (() => {
     //let port = chrome.runtime.connect({name: "schk"}),
     let maxDepth = 3,
+        siteMap,
         queue = [],
         visited = {},
         getServer = hname => hname.split(".")[hname.split(".").length - 2],
@@ -22,7 +23,7 @@
             let nextA;
             while (queue.length) {
                 nextA = queue.pop();
-                if (nextA && !visited[getServer(nextA.hostname) && nextA.scDepth <= maxDepth]) {
+                if (nextA && !visited[getServer(nextA.hostname)] && nextA.scDepth <= maxDepth) {
                     break;
                 }
             }
@@ -75,53 +76,28 @@
                 !e.querySelectorAll("map").length &&
                 !e.querySelectorAll("audio").length &&
                 (siteMap[Object.keys(siteMap).find( s => e.hostname.includes(s) )] || {}).score !== 0
-        ),
-        siteMap = {
-            "outbrain": {type: "social media", score: 0},
-            "twitter": {type: "social media", score: 0},
-            "facebook": {type: "social media", score: 0},
-            "instagram": {type: "social media", score: 0},
-            "flickr": {type: "social media", score: 0},
-            "youtube": {type: "social media", score: 0},
-            "reddit": {type: "social media", score: 0},
-            "mixer": {type: "social media", score: 0},
-            "twitch": {type: "social media", score: 0},
-            "outlook": {type: "social media", score: 0},
-            "gmail": {type: "social media", score: 0},
-            "pixels": {type: "social media", score: 0},
-            "woot": {type: "social media", score: 0},
-            "amazon": {type: "social media", score: 0},
-            "irc": {type: "social media", score: 0},
-            "vimeo": {type: "social media", score: 0},
-            "genius": {type: "social media", score: 0},
-            "plus": {type: "social media", score: 0},
-            "snapchat": {type: "social media", score: 0},
-            "soundcloud": {type: "social media", score: 0},
-            "messenger": {type: "social media", score: 0},
-            "pin": {type: "social media", score: 0},
-            "moonlighting": {type: "social media", score: 0},
-            "thanksgiving": {type: "social media", score: 0},
-            "grateful": {type: "social media", score: 0},
-            "gomnlt": {type: "social media", score: 0},
-        };
+        );
         //INIT
-        visited[getServer(window.location.hostname)] = true;
-
-        rateTree[window.location.href] = {
-            baseScore: rateSite(window.location.hostname),
-            scChildren: {},
-            scParent: null
-        }
-
-        if (rateTree[window.location.href].baseScore) {
-            let validanch = getValidAnchors("html", window.location);
-            validanch.forEach(e => {
-                let ele = $(e)[0];
-                ele.scParent = rateTree[window.location.href];
-                ele.scDepth = 1;
-                queue.push(ele);
-            });
-            runQ();
-        }
-})();
+        $.get(chrome.runtime.getURL("sitemap.json"), null, d => {
+            siteMap = d;
+            visited[getServer(window.location.hostname)] = true;
+    
+            rateTree[window.location.href] = {
+                baseScore: rateSite(window.location.hostname),
+                scChildren: {},
+                scParent: null
+            }
+    
+            if (rateTree[window.location.href].baseScore) {
+                let validanch = getValidAnchors("html", window.location);
+                validanch.forEach(e => {
+                    let ele = $(e)[0];
+                    ele.scParent = rateTree[window.location.href];
+                    ele.scDepth = 1;
+                    queue.push(ele);
+                });
+                runQ();
+            }
+        });
+    })();
 /* jshint ignore:end*/
