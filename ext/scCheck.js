@@ -25,6 +25,8 @@
                 nextA = queue.pop();
                 if (nextA && !visited[getServer(nextA.hostname)] && nextA.scDepth <= maxDepth) {
                     break;
+                } else { //nextA is invalid, so do not use it
+                    nextA = null;
                 }
             }
             if (nextA) {
@@ -147,6 +149,7 @@
                     queue.push(ele);
                     e.setAttribute("scidx", i);
                 });
+                chrome.runtime.sendMessage({text: "...", color: "#000000", title: `Testing ${validanch.length} found link${(validanch.length == 1)?"":"s"}...`});
                 runQ();
             }
             else {

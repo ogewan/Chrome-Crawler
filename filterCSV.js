@@ -8,11 +8,10 @@ let fcsv = [];
 // emits each line as a buffer or as a string representing an array of fields
 csvp.on('data', line => {
     //console.log(line);
-    let filtered = line.filter((e, i) => !filter.includes(i)).join(',');
+    let filtered = line.filter((e, i) => !filter.includes(i)).join(','); 
     //console.log(filtered);
     //fcsv.push(line.filter((e, i) => !filter.includes(i)));
-    fs.appendFileSync("_fcorpus.csv", `${filtered}\r\n`);
-    0;
+    fs.appendFileSync("_fcorpusRAW.csv", `${filtered}\r\n`);
 });
 
 // now pipe some data into it
