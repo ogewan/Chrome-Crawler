@@ -44,6 +44,9 @@
         truncate = str => (str.length > 25) ? `${str.substring(0, 25 - 3)}...` : str,
         rateTree = {},
         scoreMap = {},
+        testerRep = nfo => {
+            document.body.appendChild(document.createElement("sc-f2"));
+        },
         reqPage = anchor => {
             console.log(`load ${anchor.href}`)
             visited[getServer(anchor.hostname)] = true;
@@ -124,8 +127,8 @@
                 l.style.color = rateColor[rate];
                 realXtra.push(etitle);
             });
-
             chrome.runtime.sendMessage({text: finalScore.toString(), color: rateColor[rating], title: `Overall: [${finalScore}] ${rating}\n${realXtra.join("\n")}`});
+            testerRep({stat: "finish"});
         };
         //INIT
         $.get(chrome.runtime.getURL("sitemap.json"), null, d => {
@@ -150,6 +153,7 @@
                     e.setAttribute("scidx", i);
                 });
                 chrome.runtime.sendMessage({text: "...", color: "#000000", title: `Testing ${validanch.length} found link${(validanch.length == 1)?"":"s"}...`});
+                testerRep({stat: "start"});
                 runQ();
             }
             else {
@@ -161,6 +165,7 @@
                     disable: true,
                     title: `Page not supported: ${(sEntry) ? sKey : window.location.hostname}\nReason: ${(sEntry) ? sEntry.type : "Not Found"}`
                 });
+                testerRep({stat: "canceled"});
             }
         });
     })();

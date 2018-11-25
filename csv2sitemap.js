@@ -77,7 +77,7 @@ csvp.on('data', line => {
     //console.log(line);
     //_fcorpus is corrupted, ignore any numerical key or key with spaces (not valid host)
     let tar = line[0];
-    if (!siteMap[tar] && !tar.includes(" ") && tar.includes(".") && (ranks.includes(line[1]) || !line[1].length)) {
+    if (line.length == 3 && !siteMap[tar] && !tar.includes(" ") && tar.includes(".") && (Object.keys(ranks).includes(line[1]) || !line[1].length)) {
         siteMap[line[0]] = {
             host: line[0],
             type: line[1] || "?",
