@@ -5,7 +5,7 @@ const fs = require("fs-extra"),
     path = require("path"),
     ext = path.resolve(__dirname, 'ext'),
     crx = new ChromeExtension({
-        privateKey: fs.readFileSync(path.join(ext,"key.pem"))
+        privateKey: fs.readFileSync(path.resolve(__dirname, "key.pem"))
     });
 
 console.log("packing crx", ext);

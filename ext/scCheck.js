@@ -45,7 +45,14 @@
         rateTree = {},
         scoreMap = {},
         testerRep = nfo => {
-            document.body.appendChild(document.createElement("sc-f2"));
+            let {stat, attr} = nfo, rep;
+            if (stat == "start") {
+                rep = document.createElement("sc-1");
+            } else {
+                rep = document.createElement("sc-2");
+            }
+            Object.keys(attr).forEach(k => rep.setAttribute(k, attr[k]));
+            document.body.appendChild(rep);
         },
         reqPage = anchor => {
             console.log(`load ${anchor.href}`)
@@ -128,7 +135,11 @@
                 realXtra.push(etitle);
             });
             chrome.runtime.sendMessage({text: finalScore.toString(), color: rateColor[rating], title: `Overall: [${finalScore}] ${rating}\n${realXtra.join("\n")}`});
-            testerRep({stat: "finish"});
+            testerRep({stat: "finish", attr: {
+                time: (new Date()).valueOf(),
+                score: finalScore,
+                rating
+            }});
         };
         //INIT
         $.get(chrome.runtime.getURL("sitemap.json"), null, d => {
@@ -153,7 +164,11 @@
                     e.setAttribute("scidx", i);
                 });
                 chrome.runtime.sendMessage({text: "...", color: "#000000", title: `Testing ${validanch.length} found link${(validanch.length == 1)?"":"s"}...`});
-                testerRep({stat: "start"});
+                testerRep({stat: "start", attr: {
+                    time: (new Date()).valueOf(),
+                    count: validanch.length,
+                    href: window.location.href
+                }});
                 runQ();
             }
             else {
