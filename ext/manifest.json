@@ -1,28 +1,43 @@
 {
-   "name": "SourceCheck", 
+   "name": "SourceCheck",
    "version": "0.1",
    "description": "Rate articles and links for validity.",
-   "browser_action": 
-   {
-      "default_icon": {                    
-         "16": "icon/icon16.png",           
-         "24": "icon/icon24.png",           
-         "32": "icon/icon32.png"            
-       }
+   "browser_action": {
+      "default_icon": {
+         "16": "icon/icon16.png",
+         "24": "icon/icon24.png",
+         "32": "icon/icon32.png"
+      }
+   },
+   "background": {
+      "scripts": [
+         "scBadge.js"
+      ],
+      "persistent": false
    },
    "content_scripts": [
-       {
-           "matches": [ "http://*/*", "https://*/*" ],
-           "js": [ "jquery-3.3.1.js", "scCheck.js" ],
-           "run_at": "document_idle"
-       }
+      {
+         "matches": [
+            "http://*/*",
+            "https://*/*"
+         ],
+         "js": [
+            "jquery-3.3.1.js",
+            "scCheck.js"
+         ],
+         "run_at": "document_idle"
+      }
    ],
-   "permissions": [ "tabs" ],
+   "permissions": [
+      "tabs"
+   ],
    "icons": {
       "16": "icon/icon48.png",
       "48": "icon/icon48.png",
       "128": "icon/icon128.png"
    },
-   "web_accessible_resources": [ "sitemap.json" ],
+   "web_accessible_resources": [
+      "sitemap.json"
+   ],
    "manifest_version": 2
 }

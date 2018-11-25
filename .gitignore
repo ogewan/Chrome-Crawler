@@ -1,0 +1,11 @@
+*.txt
+*.old
+_site/
+.DS_Store
+*.jar
+*.bat
+got/
+node_modules/
+.vscode/
+_*
+*.pem

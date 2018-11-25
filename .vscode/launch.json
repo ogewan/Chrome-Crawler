@@ -4,11 +4,24 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/sourcecheck.js"
+            "name": "filter",
+            "program": "${workspaceFolder}/filterCSV.js"
+        }, 
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "pack",
+            "program": "${workspaceFolder}/pack.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "csv2sitemap",
+            "program": "${workspaceFolder}/csv2sitemap.js"
         }
     ]
 }

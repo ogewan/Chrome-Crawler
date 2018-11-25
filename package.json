@@ -1,0 +1,25 @@
+{
+  "name": "sourcecheck",
+  "version": "1.0.0",
+  "description": "Rate articles and links for validity.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ogewan/SourceCheck.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ogewan/SourceCheck/issues"
+  },
+  "homepage": "https://github.com/ogewan/SourceCheck#readme",
+  "dependencies": {
+    "crx": "^3.2.1",
+    "csv-streamify": "^4.0.0",
+    "fs-extra": "^7.0.1",
+    "puppeteer": "^1.10.0"
+  }
+}
