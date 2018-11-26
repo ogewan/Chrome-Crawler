@@ -1,6 +1,6 @@
 /* jshint ignore:start*/
 //You need a key.pem, this will silently fail 
-const fs = require("fs-extra"),
+const fs = require("fs"),
     ChromeExtension = require("crx"),
     path = require("path"),
     ext = path.resolve(__dirname, 'ext'),

@@ -3,14 +3,12 @@ const fs = require("fs-extra"),
     path = require("path"),
     cp = require("child_process"),
     util = require('util'),
-    timeStamp = (new Date()).valueOf();
-
-module.exports = {
-    forkCP: (params, config, done) => {
+    timeStamp = (new Date()).valueOf(),
+    forkCP = (params, config, done) => {
         let {child, index, mHandler} = config,
         execArgv = (process.execArgv.length) ? ["--inspect-brk=12345"] : [];
         child[index] = cp.fork(
-            path.resolve('index.js'),
+            path.resolve('testRanking.js'),
             [...params],
             { stdio: ['pipe', 'pipe', 'pipe', 'ipc'], execArgv }
         ),
@@ -29,5 +27,6 @@ module.exports = {
         child[index].stdout.on('data', printMessage);
         child[index].stderr.on('data', printMessage);
     },
-    forkCPP: util.promisify(forkCP)
-}
+    forkCPP = util.promisify(forkCP);
+
+module.exports = {forkCP, forkCPP};

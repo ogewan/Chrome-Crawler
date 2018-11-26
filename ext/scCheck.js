@@ -11,6 +11,7 @@
         siteMap,
         queue = [],
         visited = {},
+        rterr = 'chrome.runtime not supported',
         getServer = hname => hname.split(".")[hname.split(".").length - 2],
         extGood = path => {
             let arrLast = path.split("/").pop().split(".");
@@ -134,15 +135,16 @@
                 l.style.color = rateColor[rate];
                 realXtra.push(etitle);
             });
-            chrome.runtime.sendMessage({text: finalScore.toString(), color: rateColor[rating], title: `Overall: [${finalScore}] ${rating}\n${realXtra.join("\n")}`});
+            try {
+                chrome.runtime.sendMessage({text: finalScore.toString(), color: rateColor[rating], title: `Overall: [${finalScore}] ${rating}\n${realXtra.join("\n")}`});
+            } catch (e) { console.log(rterr); }
             testerRep({stat: "finish", attr: {
                 time: (new Date()).valueOf(),
                 score: finalScore,
                 rating
             }});
-        };
-        //INIT
-        $.get(chrome.runtime.getURL("sitemap.json"), null, d => {
+        },
+        init = d => {
             siteMap = d;
             visited[getServer(window.location.hostname)] = true;
     
@@ -163,7 +165,9 @@
                     queue.push(ele);
                     e.setAttribute("scidx", i);
                 });
-                chrome.runtime.sendMessage({text: "...", color: "#000000", title: `Testing ${validanch.length} found link${(validanch.length == 1)?"":"s"}...`});
+                try {
+                    chrome.runtime.sendMessage({text: "...", color: "#000000", title: `Testing ${validanch.length} found link${(validanch.length == 1)?"":"s"}...`});
+                } catch (e) { console.log(rterr) };
                 testerRep({stat: "start", attr: {
                     time: (new Date()).valueOf(),
                     count: validanch.length,
@@ -175,13 +179,27 @@
                 let wUrl = window.location.href, 
                     sKey = Object.keys(siteMap).find( h => wUrl.includes(h));
                     sEntry = siteMap[sKey] || false;
-                    
-                chrome.runtime.sendMessage({
-                    disable: true,
-                    title: `Page not supported: ${(sEntry) ? sKey : window.location.hostname}\nReason: ${(sEntry) ? sEntry.type : "Not Found"}`
-                });
-                testerRep({stat: "canceled"});
+                
+                try {
+                    chrome.runtime.sendMessage({
+                        disable: true,
+                        title: `Page not supported: ${(sEntry) ? sKey : window.location.hostname}\nReason: ${(sEntry) ? sEntry.type : "Not Found"}`
+                    });
+                } catch (e) { console.log(rterr); }
+
+                testerRep({stat: "canceled", attr: {}});
             }
-        });
+        };
+        
+        let smp;
+        try { 
+            smp = chrome.runtime.getURL("sitemap.json");
+            $.get(smp, null, init);
+        }
+        catch (e) {
+            if (!smp) {
+                init(TESTER_smp);
+            }
+        }
     })();
 /* jshint ignore:end*/
