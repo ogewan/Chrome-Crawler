@@ -1,6 +1,6 @@
 {
    "name": "SourceCheck",
-   "version": "0.4",
+   "version": "0.41",
    "description": "Rate articles and links for validity.",
    "browser_action": {
       "default_icon": {

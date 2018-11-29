@@ -19,7 +19,7 @@
                 return ["html", "htm"].includes(arrLast.pop());//php needs testing
             }
             return true;
-        }
+        },
         runQ = () => {
             let nextA;
             while (queue.length) {
