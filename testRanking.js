@@ -18,7 +18,7 @@ const pup = require("puppeteer"),
             pad((s%6e4)/1000|0) + '.' + pad(s%1000, 3);
     },
     resulter = {
-        srPath: path.resolve(__dirname, `_siteResults${(new Date()).valueOf()}.json`),
+        srPath: path.resolve(__dirname, `_siteResults.c.${(new Date()).valueOf()}.json`),
         siteRes: {},
         timeout: -1,
     },

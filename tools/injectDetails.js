@@ -1,0 +1,1 @@
+(() => { let s1 = document.querySelector("sc-1"), s2 = document.querySelector("sc-2"), s1t = s1.getAttribute("time"), s2t = s2.getAttribute("time"); console.log(`${s2t-s1t},${s1.getAttribute("count")},${s2.getAttribute("score")},${s2.getAttribute("rating")}`); })();
