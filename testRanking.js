@@ -110,23 +110,28 @@ const pup = require("puppeteer"),
         } else {
             console.log(`${opts.identity} has woken`);
             let status = "awake", activeTab = true;
-            page.setDefaultNavigationTimeout(15000);
+            //page.setDefaultNavigationTimeout(15000);
             const mMethods = {
                 test: async d => {
                     let { src, lno } = d,
-                        scStr = null, scEnd = null, data = {};
+                        scStr = [], scEnd = [], data = {};
                     try {
                         await page.setBypassCSP(true);
                         await page.goto(src);
-                        /*await page.addScriptTag({content: "TESTER_smp = "+ fs.readFileSync("ext/sitemap.json")});
-                        await page.addScriptTag({path: "ext/jquery-3.3.1.min.js"});
-                        await page.addScriptTag({path: "ext/scCheck.js"});*/
-                        await page.waitForSelector("sc-2");
                         //CSV report order startTime, baseLinkCount, score, rating, endTime
+                        await page.waitForSelector("sc-1");
                         scStr = await page.$eval('sc-1', e => [e.getAttribute("time"), [e.getAttribute("count")]]);//, e.getAttribute("href")]);
+                        await page.waitForSelector("sc-2");
                         scEnd = await page.$eval('sc-2', e => [e.getAttribute("time"), [e.getAttribute("score"), e.getAttribute("rating")]]);
                         data = {result: [scEnd[0] - scStr[0], ...scStr[1], ...scEnd[1]].join(",")};
                     } catch (e) {
+                        let result = [];
+                        if (!scStr.length) {
+                            result = "0,0,0,Failed: Page Load"
+                        } else {
+                            result = `30000,${scStr[1]},0,Failed: Timeout`
+                        }
+                        data = {result};
                         console.log(e);
                     }
                     process.send( { data, id: opts.identity, lno } );
@@ -161,7 +166,7 @@ const pup = require("puppeteer"),
         }
     };
 
-let opts = { tabs: 1 };
+let opts = { tabs: 10 };
 //CLI args
 process.argv.forEach((val, index) => {
     if (index == 2) {
@@ -176,7 +181,7 @@ process.argv.forEach((val, index) => {
 if (!opts.WSE) {
     let siteList = [],
         lineReader = require('readline').createInterface({
-            input: fs.createReadStream('_cfcorpus2.csv')
+            input: fs.createReadStream('_balSiteList.csv')
         });
 
     lineReader.on('line', line => siteList.push(line))
